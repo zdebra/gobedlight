@@ -9,6 +9,9 @@ import (
 func main()  {
 	fmt.Println("Start awesome light")
 	err := rpio.Open()
+	if err != nil {
+		return
+	}
 	pin := rpio.Pin(12)
 
 	pin.Output()       // Output mode
@@ -18,6 +21,6 @@ func main()  {
 	pin.Toggle()       // Toggle pin (Low -> High -> Low)
 
 	rpio.Close()
-	
+
 
 }
