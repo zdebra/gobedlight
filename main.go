@@ -12,14 +12,15 @@ func main()  {
 	if err != nil {
 		return
 	}
-	pin := rpio.Pin(12)
+	pin := rpio.Pin(18)
 
 	pin.Output()       // Output mode
 	pin.High()         // Set pin High
-	time.Sleep(1000 * time.Millisecond)
+	time.Sleep(2000 * time.Millisecond)
 	pin.Low()          // Set pin Low
-	pin.Toggle()       // Toggle pin (Low -> High -> Low)
+	fmt.Println("turning it off")
 
+	time.Sleep(2000 * time.Millisecond)
 	rpio.Close()
 
 
