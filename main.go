@@ -1,27 +1,40 @@
 package main
 
 import (
-	"fmt"
-	"github.com/stianeikeland/go-rpio"
 	"time"
+	"github.com/zdebra/gobedlight/led"
 )
 
+const GPIO int = 18
+
 func main()  {
+
+	/*
 	fmt.Println("Start awesome light")
 	err := rpio.Open()
 	if err != nil {
 		return
 	}
-	pin := rpio.Pin(18)
+	defer rpio.Close()
+
+	pin := rpio.Pin(GPIO)
 
 	pin.Output()       // Output mode
-	pin.High()         // Set pin High
+	pin.Low()         // turn the lights on
 	time.Sleep(2000 * time.Millisecond)
-	pin.Low()          // Set pin Low
+	pin.High()          // turn the light off
 	fmt.Println("turning it off")
 
 	time.Sleep(2000 * time.Millisecond)
 	rpio.Close()
+	*/
+
+	led := led.BedLighter{}
+	led.Initialize(GPIO)
+	led.TurnOn()
+	time.Sleep(2000 * time.Millisecond)
+	led.TurnOff()
+	led.Close()
 
 
 }
