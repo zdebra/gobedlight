@@ -30,11 +30,15 @@ func main()  {
 	*/
 
 	led := led.BedLighter{}
-	led.Initialize(GPIO)
+	err := led.Initialize(GPIO)
+	if err != nil {
+		return
+	}
+	defer led.Close()
+
 	led.TurnOn()
 	time.Sleep(2000 * time.Millisecond)
 	led.TurnOff()
-	led.Close()
-
+	time.Sleep(2000 * time.Millisecond)
 
 }
