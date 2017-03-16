@@ -36,7 +36,7 @@ func main()  {
 	}
 	defer light.Close()
 
-	fmt.Println(light.)
+	fmt.Println(light.IsOn())
 	light.TurnOn()
 	fmt.Println(light.IsOn())
 	time.Sleep(2000 * time.Millisecond)
