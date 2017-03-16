@@ -29,16 +29,15 @@ func main()  {
 	rpio.Close()
 	*/
 
-	led := led.BedLighter{}
-	err := led.Initialize(GPIO)
+	light, err := led.New(GPIO)
 	if err != nil {
 		return
 	}
-	defer led.Close()
+	defer light.Close()
 
-	led.TurnOn()
+	light.TurnOn()
 	time.Sleep(2000 * time.Millisecond)
-	led.TurnOff()
+	light.TurnOff()
 	time.Sleep(2000 * time.Millisecond)
 
 }

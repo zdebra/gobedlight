@@ -9,14 +9,15 @@ type BedLighter struct {
 	pin rpio.Pin
 }
 
-func (l BedLighter) Initialize(gpio int) error {
+func New(gpio int) (*BedLighter, error) {
 	fmt.Println("Initializing the bed light")
 	err := rpio.Open()
-	if err == nil {
-		return err
+	if err != nil {
+		return nil, err
 	}
-	l.pin = rpio.Pin(gpio)
-	return nil
+	light := new(BedLighter)
+	light.pin = rpio.Pin(gpio)
+	return light, nil
 }
 
 func (l BedLighter) Close() error {
