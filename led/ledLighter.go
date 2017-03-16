@@ -7,6 +7,7 @@ import (
 
 type BedLighter struct {
 	pin rpio.Pin
+	isOn bool
 }
 
 func New(gpio int) (*BedLighter, error) {
@@ -17,6 +18,7 @@ func New(gpio int) (*BedLighter, error) {
 	}
 	light := new(BedLighter)
 	light.pin = rpio.Pin(gpio)
+	light.TurnOff()
 	return light, nil
 }
 
@@ -27,19 +29,19 @@ func (l BedLighter) Close() error {
 
 // GetStatus returns a status of light, where true stands for lights being on and false for light being off.
 func (l BedLighter) IsOn() bool {
-	l.pin.Input()
-	status := l.pin.Read()
-	return status == rpio.Low
+	return l.isOn
 }
 
 func (l BedLighter) TurnOn() {
 	fmt.Println("Turning lights on")
 	l.pin.Output()
 	l.pin.Low()
+	l.isOn = true
 }
 
 func (l BedLighter) TurnOff() {
 	fmt.Println("Turning lights off")
 	l.pin.Output()
 	l.pin.High()
+	l.isOn = false
 }
