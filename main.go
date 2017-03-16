@@ -3,6 +3,7 @@ package main
 import (
 	"time"
 	"github.com/zdebra/gobedlight/led"
+	"fmt"
 )
 
 const GPIO int = 18
@@ -36,8 +37,11 @@ func main()  {
 	defer light.Close()
 
 	light.TurnOn()
+	fmt.Println(light.IsOn())
 	time.Sleep(2000 * time.Millisecond)
+	fmt.Println(light.IsOn())
 	light.TurnOff()
 	time.Sleep(2000 * time.Millisecond)
+	fmt.Println(light.IsOn())
 
 }
