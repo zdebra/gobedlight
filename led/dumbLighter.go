@@ -1,6 +1,8 @@
 package led
 
-import "fmt"
+import (
+	"log"
+)
 
 type DumbLighter struct {
 	status bool
@@ -12,17 +14,17 @@ func NewDumbLighter() (*DumbLighter, error) {
 }
 
 func (d *DumbLighter) TurnOn() {
-	fmt.Println("Turning on!")
+	log.Println("Turning on!")
 	d.status = true
 }
 
 func (d *DumbLighter) TurnOff() {
-	fmt.Println("Turning off!")
+	log.Println("Turning off!")
 	d.status = false
 }
 
 func (d *DumbLighter) Close() error {
-	fmt.Println("Closing a dumb lighter.")
+	log.Println("Closing a dumb lighter.")
 	return nil
 }
 
