@@ -1,53 +1,34 @@
 package main
 
 import (
-	"github.com/zdebra/gobedlight/led"
-	"github.com/brutella/hc/accessory"
-	"github.com/brutella/hc"
 	"log"
+
+	"net/http"
+
+	"flag"
+
+	"github.com/zdebra/gobedlight/led"
 )
 
-const GPIO int = 18
+const gpio = 18
 
-func main()  {
+func main() {
 
-	log.Println("Initializing the light.")
+	pin := flag.Int("pin", gpio, "pin where the light is connected")
+	flag.Parse()
 
-	light, err := led.NewBedLighter(GPIO)
+	log.Printf("initializing the light, light is expected on pin %d", *pin)
+
+	lighter, err := led.NewBedLighter(*pin)
 	if err != nil {
-		return
+		panic(err)
 	}
-	defer light.Close()
+	defer lighter.Close()
 
-	log.Println("Initializing homekit server.")
-
-	info := accessory.Info{
-		Name: "Lamp",
+	srv := &server{lighter}
+	http.HandleFunc("/toggle", srv.HandleToggle())
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		panic(err)
 	}
-	acc := accessory.NewSwitch(info)
-	config := hc.Config{Pin: "00102003"}
-	t, err := hc.NewIPTransport(config,acc.Accessory)
-	if err != nil {
-		log.Panic(err)
-	}
-
-
-	// Log to console when client (e.g. iOS app) changes the value of the on characteristic
-	acc.Switch.On.OnValueRemoteUpdate(func(on bool) {
-		if on == true {
-			log.Println("Client changed switch to on")
-			light.TurnOn()
-		} else {
-			log.Println("Client changed switch to off")
-			light.TurnOff()
-		}
-	})
-
-	hc.OnTermination(func() {
-		t.Stop()
-	})
-
-	t.Start()
-
 
 }
